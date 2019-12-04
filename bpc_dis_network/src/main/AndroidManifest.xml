@@ -1,0 +1,5 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="network.bpc.bpc_dis_network" >
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+</manifest>
