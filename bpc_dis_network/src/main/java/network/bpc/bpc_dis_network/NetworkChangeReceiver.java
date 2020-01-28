@@ -3,24 +3,26 @@ package network.bpc.bpc_dis_network;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 
 public class NetworkChangeReceiver extends BroadcastReceiver {
 
-    private final INetworkChangedListener networkChangedListener;
-    public NetworkChangeReceiver(){
-        networkChangedListener = new INetworkChangedListener() {
-            @Override
-            public void onNetworkStateChanged(boolean isOnline) {
+    private NetworkChangeListener networkChangedListener;
 
-            }
-        };
+    public NetworkChangeReceiver() {
+
     }
-    public NetworkChangeReceiver(INetworkChangedListener networkChangedListener){
+
+    public NetworkChangeReceiver(NetworkChangeListener networkChangedListener) {
         this.networkChangedListener = networkChangedListener;
     }
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        NetworkManager.NetworkState state= NetworkManager.getConnectivityStatus(context);
-        networkChangedListener.onNetworkStateChanged(state == NetworkManager.NetworkState.CONNECTED);
+        NetworkManager networkManager = new NetworkManager();
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkState networkState = networkManager.getConnectivityStatus(connectivityManager);
+        networkChangedListener.onNetworkStateChanged(networkState == NetworkState.CONNECTED);
     }
+
 }

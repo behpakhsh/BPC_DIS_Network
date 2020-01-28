@@ -1,43 +1,43 @@
 package network.bpc.bpc_dis_network;
 
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import java.io.Serializable;
-
 public class NetworkManager {
 
-    public enum NetworkState implements Serializable {
-
-        NONE(0),
-        CONNECTED(1),
-        NOT_CONNECTED(2);
-
-        private final int value;
-
-        NetworkState(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-
-    }
+    /*
+     * @deprecated
+     * do not use this static method with context params
+     */
+    @Deprecated
     public static NetworkState getConnectivityStatus(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork;
-        if (connectivityManager != null)
+        NetworkInfo activeNetwork = null;
+        if (connectivityManager != null) {
             activeNetwork = connectivityManager.getActiveNetworkInfo();
-        else
-            activeNetwork = null;
+        }
         if (activeNetwork != null && activeNetwork.isConnected()) {
-            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI)
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
                 return NetworkState.CONNECTED;
-            else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
+            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
                 return NetworkState.CONNECTED;
+            }
+        }
+        return NetworkState.NOT_CONNECTED;
+    }
+
+    public NetworkState getConnectivityStatus(ConnectivityManager connectivityManager) {
+        NetworkInfo activeNetwork = null;
+        if (connectivityManager != null) {
+            activeNetwork = connectivityManager.getActiveNetworkInfo();
+        }
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+                return NetworkState.CONNECTED;
+            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+                return NetworkState.CONNECTED;
+            }
         }
         return NetworkState.NOT_CONNECTED;
     }
