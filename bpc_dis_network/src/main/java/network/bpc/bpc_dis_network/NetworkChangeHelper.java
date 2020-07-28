@@ -7,9 +7,10 @@ import android.net.ConnectivityManager;
 public class NetworkChangeHelper {
 
     private boolean isFirstRun = true;
+    private NetworkChangeReceiver networkChangeReceiver;
 
-    public NetworkChangeReceiver registerNetworkChangeReceiver(Context context, final NetworkChangeListener networkChangeListener) {
-        NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver(new NetworkChangeListener() {
+    public void registerNetworkChangeReceiver(Context context, final NetworkChangeListener networkChangeListener) {
+        networkChangeReceiver = new NetworkChangeReceiver(new NetworkChangeListener() {
             @Override
             public void onNetworkStateChanged(boolean isOnline) {
                 if (isFirstRun) {
@@ -24,10 +25,9 @@ public class NetworkChangeHelper {
         if (context != null) {
             context.registerReceiver(networkChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
-        return networkChangeReceiver;
     }
 
-    public void unregisterNetworkChangeReceiver(Context context, NetworkChangeReceiver networkChangeReceiver) {
+    public void unregisterNetworkChangeReceiver(Context context) {
         if (context != null) {
             context.unregisterReceiver(networkChangeReceiver);
         }
