@@ -68,7 +68,7 @@ public class NetworkManager {
         return NetworkState.NOT_CONNECTED;
     }
 
-    public boolean isInternetReachable() {
+    public static boolean isInternetReachable() {
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
