@@ -5,6 +5,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.StrictMode;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class NetworkManager {
 
@@ -61,6 +66,25 @@ public class NetworkManager {
             }
         }
         return NetworkState.NOT_CONNECTED;
+    }
+
+    public boolean isInternetReachable() {
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            HttpURLConnection url = (HttpURLConnection) (new URL("http://clients3.google.com/generate_204").openConnection());
+            url.setRequestProperty("User-Agent", "Android");
+            url.setRequestProperty("Connection", "close");
+            url.setConnectTimeout(1500);
+            url.setUseCaches(false);
+            url.setInstanceFollowRedirects(true);
+            url.connect();
+            int result = url.getResponseCode();
+            return (result == 204);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
