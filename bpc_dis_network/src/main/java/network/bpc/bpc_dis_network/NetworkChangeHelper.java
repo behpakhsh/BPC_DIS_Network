@@ -8,7 +8,7 @@ public class NetworkChangeHelper {
 
     private boolean isFirstRun = true;
 
-    private NetworkChangeReceiver registerNetworkChangeReceiver(Context context, final NetworkChangeListener networkChangeListener) {
+    public NetworkChangeReceiver registerNetworkChangeReceiver(Context context, final NetworkChangeListener networkChangeListener) {
         NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver(new NetworkChangeListener() {
             @Override
             public void onNetworkStateChanged(boolean isOnline) {
@@ -27,7 +27,7 @@ public class NetworkChangeHelper {
         return networkChangeReceiver;
     }
 
-    private void unregisterNetworkChangeReceiver(Context context, NetworkChangeReceiver networkChangeReceiver) {
+    public void unregisterNetworkChangeReceiver(Context context, NetworkChangeReceiver networkChangeReceiver) {
         if (context != null) {
             context.unregisterReceiver(networkChangeReceiver);
         }
